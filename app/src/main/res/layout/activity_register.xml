@@ -46,14 +46,12 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:hint="@string/repeat_password"
-        android:hintTextColor="#757575"
         android:inputType="textPassword"
         android:maxLines="1"
         android:minHeight="48dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        tools:ignore="TextContrastCheck"
-        android:importantForAutofill="no" />
+        tools:ignore="TextContrastCheck" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerButton"

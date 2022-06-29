@@ -44,7 +44,7 @@
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_input_add"
             tools:ignore="SpeakableTextPresentCheck"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/todo"
             android:focusable="true" />
 
     </LinearLayout>

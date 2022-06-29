@@ -11,19 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:text="Add a new Point"
-        android:gravity="center"
         android:background="@drawable/home_background"
+        android:gravity="center"
         android:padding="10dp"
-        android:textColor="#fff"
+        android:text="@string/add_a_new_point"
+        android:textColor="#FFFDE7"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textSize="20sp"/>
+        tools:ignore="TextContrastCheck" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        >
+        android:baselineAligned="false">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -33,7 +34,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Temperature"
+                android:text="@string/temperature"
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="10dp"/>
@@ -59,13 +60,14 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
                 <TextView
                     android:id="@+id/temperatureViewProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10c"
+                    android:text="@string/_10c"
                     android:layout_marginTop="40dp"
                     />
             </RelativeLayout>
@@ -76,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        >
+        android:baselineAligned="false">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -86,7 +88,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Humidity"
+                android:text="@string/humidity"
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="10dp"/>
@@ -112,13 +114,14 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
                 <TextView
                     android:id="@+id/humidityViewProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0h"
+                    android:text="@string/_0h"
                     android:layout_marginTop="40dp"
                     />
             </RelativeLayout>
@@ -128,7 +131,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -137,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:id="@+id/saveButton"
-                android:text="Save"
+                android:text="@string/save"
                 android:textStyle="bold"
                 android:textAllCaps="false"
                 android:textSize="18sp"
@@ -159,7 +163,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/home_background"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="18sp"
