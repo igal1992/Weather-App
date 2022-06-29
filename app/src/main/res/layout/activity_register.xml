@@ -14,15 +14,16 @@
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="20dp"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:maxLines="1"
         android:minHeight="48dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        android:paddingEnd="20dp"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/password"
@@ -30,24 +31,29 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:maxLines="1"
         android:minHeight="48dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        android:paddingEnd="20dp"
+        android:importantForAutofill="no" />
+
     <EditText
         android:id="@+id/passwordRep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:hint="Repeat Password"
+        android:hint="@string/repeat_password"
+        android:hintTextColor="#757575"
         android:inputType="textPassword"
         android:maxLines="1"
         android:minHeight="48dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        android:paddingEnd="20dp"
+        tools:ignore="TextContrastCheck"
+        android:importantForAutofill="no" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerButton"
@@ -57,7 +63,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:background="#F8BD0D"
-        android:text="Register"
+        android:text="@string/register"
         android:textSize="20sp" />
 
     <LinearLayout
@@ -71,14 +77,14 @@
             android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="have an account?"
+            android:text="@string/have_an_account"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loginNowButton"
-            android:layout_marginLeft="10dp"
-            android:text="Login Now"
+            android:layout_marginStart="10dp"
+            android:text="@string/login_now"
             android:textStyle="bold"
             />
     </LinearLayout>
