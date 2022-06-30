@@ -23,7 +23,8 @@
         android:maxLines="1"
         android:minHeight="48dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        android:paddingEnd="20dp"
+        android:backgroundTint="@color/black"/>
 
     <EditText
         android:id="@+id/password"
@@ -38,7 +39,8 @@
         android:maxLines="1"
         android:minHeight="48dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        android:paddingEnd="20dp"
+        android:backgroundTint="@color/black"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"

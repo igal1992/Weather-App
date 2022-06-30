@@ -25,7 +25,8 @@
         android:minHeight="48dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:importantForAutofill="no" />
+        android:importantForAutofill="no"
+        android:backgroundTint="@color/black"/>
 
     <EditText
         android:id="@+id/password"
@@ -41,7 +42,8 @@
         android:minHeight="48dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:importantForAutofill="no" />
+        android:importantForAutofill="no"
+        android:backgroundTint="@color/black"/>
 
     <EditText
         android:id="@+id/passwordRep"
@@ -56,7 +58,8 @@
         android:minHeight="48dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        tools:ignore="TextContrastCheck" />
+        tools:ignore="TextContrastCheck"
+        android:backgroundTint="@color/black"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerButton"
