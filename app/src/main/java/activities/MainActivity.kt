@@ -33,10 +33,9 @@ class MainActivity : AppCompatActivity() {
     private var database = FirebaseFirestore.getInstance()
     private lateinit var  firebaseAuth: FirebaseAuth
 
-
-
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
+        //basic settings of the class
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -96,9 +95,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun viewSettings(myDialog: Dialog,dialogBinding: View){
+        //input layout launch
         myDialog.setContentView(dialogBinding)
         myDialog.setCancelable(true)
         myDialog?.show()
+        //layout settings
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         val displayWidth = displayMetrics.widthPixels
@@ -153,52 +154,91 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpCHartLayout(uid:String){
-        var barList1 = mutableListOf<BarEntry>()
-        var barList2 = mutableListOf<BarEntry>()
+        //bar lists datasets x y1 y2
+        val barList1 = mutableListOf<BarEntry>()
+        val barList2 = mutableListOf<BarEntry>()
         val labels = mutableListOf<String>()
-        var helper = MyDBHelper(applicationContext)
-        var db = helper.readableDatabase
+
+        //data base helper class definition with query
+        val helper = MyDBHelper(applicationContext)
+        val db = helper.readableDatabase
         val selectQuery = "SELECT * FROM POINTS WHERE UID = ?"
-        var rs = db.rawQuery( selectQuery, arrayOf(uid))
+        val rs = db.rawQuery( selectQuery, arrayOf(uid))
+
+        //layout settings definitions
+        val xAxis = binding.chartLayout.xAxis
+        val layout = binding.chartLayout
+        val barDataSet1 : BarDataSet
+        val barDataSet2 : BarDataSet
+        val barData : BarData
+        val grup_space = 1.6f
+        val bar_space = 0f
+
+        // temp x value for the bar data sets
         var x = 0f
+
+        //run on all the datasets from the sqlite db
         with(rs) {
             while (moveToNext()) {
+                //create the time based of israeli timeline
                 labels.add(
-                        rs.getString(1).slice(8..9)
+                    rs.getString(1).slice(8..9)
                             +"/"+
-                        rs.getString(1).slice(5..6)
+                            rs.getString(1).slice(5..6)
                             +"/"+
-                        rs.getString(1).slice(2..3)
-                            +" T"+
+                            rs.getString(1).slice(2..3)
+                            +" - "+
                         rs.getString(1).slice(11..15))
+
+                //rest of data
                 val temperature = rs.getString(2).toString()
                 val humidity = rs.getString(3).toString()
+
+                //add the data to the bar lists accordingly
                 barList1.add(BarEntry(x, temperature.toFloat()))
                 barList2.add(BarEntry(x, humidity.toFloat()))
                 x = x + 1f
             }
         }
         rs.close()
-        val xAxis = binding.chartLayout.xAxis
-        var layout = binding.chartLayout
+        //layout settings
         layout.legend.textSize = 15f
         layout.axisLeft.xOffset = 15f
         layout.axisRight.xOffset = 15f
         layout.description.isEnabled = false
+
+        //x axis settings
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.granularity = 1f
+        xAxis.granularity = 3f
         xAxis.setDrawGridLines(false)
-        xAxis.valueFormatter = IAxisValueFormatter { value, axis -> labels[value.toInt()] }
+        xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
+            if(value.toInt() >=0 && value.toInt()/xAxis.granularity.toInt() <= labels.size-1){
+                labels[value.toInt()/xAxis.granularity.toInt()]
+            }else{
+            ("").toString()
+            }
+        }
         xAxis.textSize = 12f
-        val barDataSet1 = BarDataSet(barList1,"Temperature")
-        barDataSet1.color = Color.CYAN
-        barDataSet1.valueTextSize = 10f
-        val barDataSet2 = BarDataSet(barList2,"Humidity")
+        xAxis.axisMinimum=-1.5f
+
+        //bar data sets settings
+        barDataSet1 = BarDataSet(barList1,"Temperature")
+        barDataSet2 = BarDataSet(barList2,"Humidity")
         barDataSet2.color = Color.RED
-        barDataSet2.valueTextSize = 10f
-        val barData = BarData(barDataSet1,barDataSet2)
+        barDataSet2.valueTextSize = 14f
+        barDataSet1.color = Color.CYAN
+        barDataSet1.valueTextSize = 14f
+        barData = BarData(barDataSet1,barDataSet2)
+        barData.barWidth = 0.7f
+
+
+        //show data and final setting
         layout.data = barData
+        layout.isDragEnabled = true
         layout.setVisibleXRangeMaximum(3f)
-        barData.barWidth = 0.5f
+        layout.groupBars(-1.5f,grup_space,bar_space)
+        xAxis.axisMaximum = 0f+ layout.barData.getGroupWidth(grup_space,bar_space)* labels.size
+        layout.invalidate()
+
     }
 }

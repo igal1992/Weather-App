@@ -34,26 +34,28 @@ class Login : AppCompatActivity() {
 
         //create the listener for the login button
         binding.loginButton.setOnClickListener {
-            val email = binding.email.text.toString()
-            val password = binding.password.text.toString()
-
-            //check if all fields are filled
-            if(email.isNotEmpty() && password.isNotEmpty() ){
-                    //login to user with username field and password field
-                    firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
-                        if(it.isSuccessful){//if successfully logged in switch activity to main screen
-                            val intent = Intent(this, activities.MainActivity::class.java)
-                            startActivity(intent)
-                        }else{//else make an error message
-                            Toast.makeText(this,it.exception.toString() , Toast.LENGTH_SHORT).show()
-                        }
-                    }
-            }else{//else make an error message
-                Toast.makeText(this,"Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
-            }
+            this.login()
         }
     }
+    private fun login(){
+        val email = binding.email.text.toString()
+        val password = binding.password.text.toString()
 
+        //check if all fields are filled
+        if(email.isNotEmpty() && password.isNotEmpty() ){
+            //login to user with username field and password field
+            firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
+                if(it.isSuccessful){//if successfully logged in switch activity to main screen
+                    val intent = Intent(this, activities.MainActivity::class.java)
+                    startActivity(intent)
+                }else{//else make an error message
+                    Toast.makeText(this,it.exception.toString() , Toast.LENGTH_SHORT).show()
+                }
+            }
+        }else{//else make an error message
+            Toast.makeText(this,"Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
+        }
+    }
     //check on start up if user logged in if so go to main screen
     override fun onStart() {
         super.onStart()
