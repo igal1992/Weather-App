@@ -12,8 +12,13 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -23,8 +28,14 @@ import com.google.android.material.slider.Slider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import helpers.MyDBHelper
+import org.json.JSONArray
+import org.json.JSONObject
 import xd.activities.R
 import xd.activities.databinding.ActivityMainBinding
+import java.lang.Exception
+import java.math.RoundingMode
+import java.net.URL
+import java.text.DecimalFormat
 import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity() {
@@ -81,7 +92,39 @@ class MainActivity : AppCompatActivity() {
             }
 
             saveBtn.setOnClickListener {
-                this.saveData(uid, creationTime,dialogBinding, myDialog)
+                this.saveData(uid, creationTime,dialogBinding, myDialog,false)
+            }
+
+            /*------------------------------------------------------------------------------------*/
+
+        }
+
+        //handle the add new data section
+        binding.addApiButton.setOnClickListener {
+            val dialogBinding = layoutInflater.inflate(R.layout.weather_api_input_file, null)
+            val myDialog = Dialog(this)
+            val cancelBtn = dialogBinding.findViewById<TextView>(R.id.cancelButtonApi)
+            val saveBtn = dialogBinding.findViewById<Button>(R.id.saveButtonApi)
+            val uid = firebaseAuth.currentUser?.uid.toString()
+            val creationTime = LocalDateTime.now().toString()
+
+            /*------------------------------------------------------------------------------------*/
+            //set the input file settings after launch
+            /*------------------------------------------------------------------------------------*/
+
+            this.viewSettings(myDialog,dialogBinding)
+
+
+            /*------------------------------------------------------------------------------------*/
+            //set the save and cancel listeners
+            /*------------------------------------------------------------------------------------*/
+
+            cancelBtn.setOnClickListener {
+                myDialog.dismiss()
+            }
+
+            saveBtn.setOnClickListener {
+                this.saveData(uid, creationTime,dialogBinding, myDialog,true)
             }
 
             /*------------------------------------------------------------------------------------*/
@@ -122,36 +165,116 @@ class MainActivity : AppCompatActivity() {
             tempProgress.text = "$value" + "c"
         }
     }
-    fun saveData(uid:String,creationTime:String,dialogBinding:View,myDialog: Dialog){
+    fun saveData(uid:String,creationTime:String,dialogBinding:View,myDialog: Dialog,isApi: Boolean){
         //insert the point into the local machine via sqlite
-        val temperature = dialogBinding.findViewById<Slider>(R.id.sliderTemp).value.toString()
-        val humidity = dialogBinding.findViewById<Slider>(R.id.sliderHumid).value.toString()
-        var helper = MyDBHelper(applicationContext)
-        var db = helper.readableDatabase
         var cv = ContentValues()
-        cv.put("creationTime",creationTime)
-        cv.put("UID",uid)
-        cv.put("temperature",temperature)
-        cv.put("humidity",humidity)
-        db.insert("POINTS",null, cv)
-
-        //insert the point into the firebase db
         val point: MutableMap<String,Any> = hashMapOf()
-        point["creationTime"] = creationTime
-        point["UID"] = uid
-        point["temperature"] = temperature
-        point["humidity"] = humidity
-        database.collection("Points")
-            .add(point)
-            .addOnSuccessListener {
-                Toast.makeText(this,"Successfully Saved",Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
-                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
-            }
-        myDialog.dismiss()
-        finish();
-        startActivity(getIntent());
+        if(!isApi){
+            val temperature = dialogBinding.findViewById<Slider>(R.id.sliderTemp).value.toString()
+            val humidity = dialogBinding.findViewById<Slider>(R.id.sliderHumid).value.toString()
+            cv.put("temperature",temperature)
+            cv.put("humidity",humidity)
+            point["temperature"] = temperature
+            point["humidity"] = humidity
+            var helper = MyDBHelper(applicationContext)
+            var db = helper.readableDatabase
+            cv.put("creationTime",creationTime)
+            cv.put("UID",uid)
+            db.insert("POINTS",null, cv)
+            //insert the point into the firebase db
+            point["creationTime"] = creationTime
+            point["UID"] = uid
+
+            database.collection("Points")
+                .add(point)
+                .addOnSuccessListener {
+                    Toast.makeText(this,"Successfully Saved",Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                }
+            myDialog.dismiss()
+            finish();
+            startActivity(getIntent());
+        }else{
+            this.getApiWeatherOpen(myDialog,dialogBinding,creationTime,uid)
+        }
     }
+
+
+
+    private fun getApiWeatherOpen(myDialog: Dialog,dialogBinding: View,creationTime: String,uid: String){
+        var cv = ContentValues()
+        val point: MutableMap<String,Any> = hashMapOf()
+        val cityField = dialogBinding.findViewById<EditText>(R.id.cityField).text.toString()
+        val stateCode = 376
+        val key = "48339ce7035a2d5c45177ee7cf076e5a"
+        try{
+            val queue = Volley.newRequestQueue(this)
+            //works only for israel cause of state code
+            val url = "https://api.openweathermap.org/geo/1.0/direct?q=${cityField},${stateCode}&appid=${key}"
+            val stringRequest = StringRequest(
+                Request.Method.GET, url,
+                Response.Listener<String> { response ->
+                    if(response.equals("[]")){//if did not find the city
+                        Toast.makeText(this,"Could Not Find The City",Toast.LENGTH_SHORT).show()
+                    }else{
+                     //all values setup
+                    val jsonCoords = JSONArray(response)
+                    val mainCoords = jsonCoords.getJSONObject(0)
+                    val df = DecimalFormat("#.##")
+                    df.roundingMode = RoundingMode.DOWN
+                    val lat = df.format(mainCoords.getString("lat").toFloat())
+                    val lon = df.format(mainCoords.getString("lon").toFloat())
+                    val urlNext = "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}"
+                    val stringRequestTwo = StringRequest(
+                        Request.Method.GET, urlNext,
+                        Response.Listener<String> { response ->
+                            //all values set up
+                            val jsonWeatherApi = JSONObject(response)
+                            val mainWeatherApi = jsonWeatherApi.getJSONObject("main")
+                            val temperature = df.format(mainWeatherApi.getString("temp_min").toFloat() - 273.15).toString()
+                            val humidity = df.format(mainWeatherApi.getString("humidity").toFloat())
+                            cv.put("temperature",temperature)
+                            cv.put("humidity",humidity)
+                            point["temperature"] = temperature
+                            point["humidity"] = humidity
+                            var helper = MyDBHelper(applicationContext)
+                            var db = helper.readableDatabase
+                            cv.put("creationTime",creationTime)
+                            cv.put("UID",uid)
+                            db.insert("POINTS",null, cv)
+                            //insert the point into the firebase db
+                            point["creationTime"] = creationTime
+                            point["UID"] = uid
+                            database.collection("Points")
+                                    .add(point)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this,"Successfully Saved",Toast.LENGTH_SHORT).show()
+                                    }.addOnFailureListener {
+                                        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                                    }
+                            myDialog.dismiss()
+                            finish();
+                            startActivity(getIntent());
+                        },
+                        Response.ErrorListener {
+                            Toast.makeText(this,"Could Not Find The City",Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                    queue.add(stringRequestTwo)
+                    }
+                },
+                Response.ErrorListener {
+                    Toast.makeText(this,"Could Not Find The City",Toast.LENGTH_SHORT).show()
+                }
+            )
+            queue.add(stringRequest)
+        }catch (NetworkOnMainThreadException: Exception){
+            Toast.makeText(this,"Could Not Found the City",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 
     private fun setUpCHartLayout(uid:String){
         //bar lists datasets x y1 y2
