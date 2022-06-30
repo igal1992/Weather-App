@@ -31,7 +31,7 @@
             android:minHeight="48dp"
             android:text="@string/Logout"
             android:textColor="#455A64"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:focusable="true" />
         <TextView
             android:id="@+id/addApiButton"
@@ -45,7 +45,7 @@
             android:minHeight="48dp"
             android:text="Open Weather api"
             android:textColor="#455A64"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:focusable="true" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginBottom="15dp"
+            android:layout_marginLeft="40dp"
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_input_add"
             tools:ignore="SpeakableTextPresentCheck"
