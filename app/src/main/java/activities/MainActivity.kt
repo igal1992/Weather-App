@@ -8,6 +8,8 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
@@ -15,6 +17,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.text.set
+import androidx.core.widget.addTextChangedListener
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -159,10 +163,10 @@ class MainActivity : AppCompatActivity() {
         val tempProgress = dialogBinding.findViewById<TextView>(R.id.temperatureViewProgress)
 
         sliderHumid.addOnChangeListener{slider,value,fromUser ->
-            humidProgress.text = "$value" + "h"
+            humidProgress.text = ("$value" + "h")
         }
         sliderTemp.addOnChangeListener{slider,value,fromUser ->
-            tempProgress.text = "$value" + "c"
+            tempProgress.text = ("$value" + "c")
         }
     }
     fun saveData(uid:String,creationTime:String,dialogBinding:View,myDialog: Dialog,isApi: Boolean){

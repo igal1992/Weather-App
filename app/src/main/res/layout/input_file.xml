@@ -18,7 +18,8 @@
         android:textColor="#FFFDE7"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:ignore="TextContrastCheck" />
+        tools:ignore="TextContrastCheck"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,8 +55,8 @@
                     android:id="@+id/sliderTemp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:value="10"
-                    android:valueFrom="10"
+                    android:value="-10"
+                    android:valueFrom="-10"
                     android:valueTo="50"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -67,9 +68,9 @@
                     android:id="@+id/temperatureViewProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_10c"
                     android:layout_marginTop="40dp"
-                    />
+                    android:text="-10c"
+                    android:textColor="@color/black" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -121,9 +122,9 @@
                     android:id="@+id/humidityViewProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_0h"
                     android:layout_marginTop="40dp"
-                    />
+                    android:textColor="@color/black"
+                    android:text="0h" />
             </RelativeLayout>
         </RelativeLayout>
 
