@@ -158,15 +158,48 @@ class MainActivity : AppCompatActivity() {
     }
     fun sliderHandler(dialogBinding: View){
         val sliderHumid = dialogBinding.findViewById<Slider>(R.id.sliderHumid)
-        val humidProgress = dialogBinding.findViewById<TextView>(R.id.humidityViewProgress)
+        val humidProgress = dialogBinding.findViewById<EditText>(R.id.humidityViewProgress)
         val sliderTemp = dialogBinding.findViewById<Slider>(R.id.sliderTemp)
-        val tempProgress = dialogBinding.findViewById<TextView>(R.id.temperatureViewProgress)
+        val tempProgress = dialogBinding.findViewById<EditText>(R.id.temperatureViewProgress)
 
-        sliderHumid.addOnChangeListener{slider,value,fromUser ->
-            humidProgress.text = ("$value" + "h")
+        //create a listener for humidity slider for when a user stops touching the slider
+        sliderHumid.addOnSliderTouchListener(object : Slider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: Slider) {
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                val value = slider.value
+                humidProgress.setText("$value" + "h")
+            }
+
+        })
+
+        //create a listener when a user inputs a value into the edit text field of humidity
+        humidProgress.addTextChangedListener {
+            val value = humidProgress.text.toString()
+            if(value.toFloatOrNull() != null && value.toFloat() >=0 && value.toFloat() <= 100){
+                sliderHumid.value = value.toFloat()
+            }
         }
-        sliderTemp.addOnChangeListener{slider,value,fromUser ->
-            tempProgress.text = ("$value" + "c")
+
+        //create a listener for temperature slider for when a user stops touching the slider
+        sliderTemp.addOnSliderTouchListener(object : Slider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: Slider) {
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                val value = slider.value
+                tempProgress.setText("$value" + "h")
+            }
+
+        })
+
+        //create a listener when a user inputs a value into the edit text field of temperature
+        tempProgress.addTextChangedListener {
+            val value = tempProgress.text.toString()
+            if(value.toFloatOrNull() != null && value.toFloat() >=-10 && value.toFloat() <= 50){
+                sliderTemp.value = value.toFloat()
+            }
         }
     }
     fun saveData(uid:String,creationTime:String,dialogBinding:View,myDialog: Dialog,isApi: Boolean){

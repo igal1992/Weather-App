@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="SpeakableTextPresentCheck" />
 
-                <TextView
+                <EditText
                     android:id="@+id/temperatureViewProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,13 +118,13 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="SpeakableTextPresentCheck" />
 
-                <TextView
+                <EditText
                     android:id="@+id/humidityViewProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:textColor="@color/black"
-                    android:text="0h" />
+                    android:text="0h"
+                    android:textColor="@color/black" />
             </RelativeLayout>
         </RelativeLayout>
 
