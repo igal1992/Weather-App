@@ -11,8 +11,6 @@
     <string name="todo">TODO</string>
     <string name="temperature">Temperature</string>
     <string name="humidity">Humidity</string>
-    <string name="_10c">10c</string>
-    <string name="_0h">0h</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="add_a_new_point">Add a new Point</string>
