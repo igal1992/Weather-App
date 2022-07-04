@@ -45,8 +45,15 @@ import java.time.LocalDateTime
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var database = FirebaseFirestore.getInstance()
     private lateinit var  firebaseAuth: FirebaseAuth
+    private lateinit var dialogBinding: View
+    private lateinit var  myDialog: Dialog
+    private lateinit var  cancelBtn : TextView
+    private lateinit var saveBtn : Button
+    private lateinit var creationTime: String
+    private lateinit var uid: String
+    private val database = FirebaseFirestore.getInstance()
+
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,12 +75,12 @@ class MainActivity : AppCompatActivity() {
 
         //handle the add new data section
         binding.addNewDataButton.setOnClickListener {
-            val dialogBinding = layoutInflater.inflate(R.layout.input_file, null)
-            val myDialog = Dialog(this)
-            val cancelBtn = dialogBinding.findViewById<TextView>(R.id.cancelButton)
-            val saveBtn = dialogBinding.findViewById<Button>(R.id.saveButton)
-            val uid = firebaseAuth.currentUser?.uid.toString()
-            val creationTime = LocalDateTime.now().toString()
+             dialogBinding = layoutInflater.inflate(R.layout.input_file, null)
+             myDialog = Dialog(this)
+             cancelBtn = dialogBinding.findViewById<TextView>(R.id.cancelButton)
+             saveBtn = dialogBinding.findViewById<Button>(R.id.saveButton)
+             uid = firebaseAuth.currentUser?.uid.toString()
+             creationTime = LocalDateTime.now().toString()
 
             /*------------------------------------------------------------------------------------*/
             //set the input file settings after launch
@@ -105,12 +112,12 @@ class MainActivity : AppCompatActivity() {
 
         //handle the add new data section
         binding.addApiButton.setOnClickListener {
-            val dialogBinding = layoutInflater.inflate(R.layout.weather_api_input_file, null)
-            val myDialog = Dialog(this)
-            val cancelBtn = dialogBinding.findViewById<TextView>(R.id.cancelButtonApi)
-            val saveBtn = dialogBinding.findViewById<Button>(R.id.saveButtonApi)
-            val uid = firebaseAuth.currentUser?.uid.toString()
-            val creationTime = LocalDateTime.now().toString()
+             dialogBinding = layoutInflater.inflate(R.layout.weather_api_input_file, null)
+             myDialog = Dialog(this)
+             cancelBtn = dialogBinding.findViewById<TextView>(R.id.cancelButtonApi)
+             saveBtn = dialogBinding.findViewById<Button>(R.id.saveButtonApi)
+             uid = firebaseAuth.currentUser?.uid.toString()
+             creationTime = LocalDateTime.now().toString()
 
             /*------------------------------------------------------------------------------------*/
             //set the input file settings after launch
@@ -251,7 +258,7 @@ class MainActivity : AppCompatActivity() {
             val url = "https://api.openweathermap.org/geo/1.0/direct?q=${cityField},${stateCode}&appid=${key}"
             val stringRequest = StringRequest(
                 Request.Method.GET, url,
-                Response.Listener<String> { response ->
+                { response ->
                     if(response.equals("[]")){//if did not find the city
                         Toast.makeText(this,"Could Not Find The City",Toast.LENGTH_SHORT).show()
                     }else{
@@ -265,7 +272,7 @@ class MainActivity : AppCompatActivity() {
                     val urlNext = "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}"
                     val stringRequestTwo = StringRequest(
                         Request.Method.GET, urlNext,
-                        Response.Listener<String> { response ->
+                         { response ->
                             //all values set up
                             val jsonWeatherApi = JSONObject(response)
                             val mainWeatherApi = jsonWeatherApi.getJSONObject("main")
@@ -301,7 +308,7 @@ class MainActivity : AppCompatActivity() {
                     queue.add(stringRequestTwo)
                     }
                 },
-                Response.ErrorListener {
+                {
                     Toast.makeText(this,"Could Not Find The City",Toast.LENGTH_SHORT).show()
                 }
             )

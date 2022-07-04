@@ -14,8 +14,12 @@ import xd.activities.databinding.ActivityRegisterBinding
 
 class Login : AppCompatActivity() {
 
-    private lateinit var  binding: ActivityLoginBinding
-    private lateinit var  firebaseAuth: FirebaseAuth
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var regIntent: Intent
+    private lateinit var email: String
+    private lateinit var password : String
+    private lateinit var mainIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +32,8 @@ class Login : AppCompatActivity() {
 
         //create a listener for the register now button to move to the register activity
         binding.registerNowButton.setOnClickListener{
-            val intent = Intent(this, Register::class.java)
-            startActivity(intent)
+            regIntent = Intent(this, Register::class.java)
+            startActivity(regIntent)
         }
 
         //create the listener for the login button
@@ -38,16 +42,16 @@ class Login : AppCompatActivity() {
         }
     }
     private fun login(){
-        val email = binding.email.text.toString()
-        val password = binding.password.text.toString()
+        email = binding.email.text.toString()
+        password = binding.password.text.toString()
 
         //check if all fields are filled
         if(email.isNotEmpty() && password.isNotEmpty() ){
             //login to user with username field and password field
             firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
                 if(it.isSuccessful){//if successfully logged in switch activity to main screen
-                    val intent = Intent(this, activities.MainActivity::class.java)
-                    startActivity(intent)
+                    mainIntent = Intent(this, activities.MainActivity::class.java)
+                    startActivity(mainIntent)
                 }else{//else make an error message
                     Toast.makeText(this,it.exception.toString() , Toast.LENGTH_SHORT).show()
                 }
@@ -60,8 +64,8 @@ class Login : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if(firebaseAuth.currentUser != null){
-            val intent = Intent(this, activities.MainActivity::class.java)
-            startActivity(intent)
+            mainIntent = Intent(this, activities.MainActivity::class.java)
+            startActivity(mainIntent)
         }
     }
 }
