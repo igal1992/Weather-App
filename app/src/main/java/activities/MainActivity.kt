@@ -7,9 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.BaseColumns
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
@@ -17,7 +14,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.text.set
 import androidx.core.widget.addTextChangedListener
 import com.android.volley.Request
 import com.android.volley.Response
@@ -38,7 +34,6 @@ import xd.activities.R
 import xd.activities.databinding.ActivityMainBinding
 import java.lang.Exception
 import java.math.RoundingMode
-import java.net.URL
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 

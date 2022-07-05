@@ -9,8 +9,6 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import xd.activities.R
-import xd.activities.databinding.ActivityLoginBinding
-import xd.activities.databinding.ActivityRegisterBinding
 import xd.activities.databinding.ActivitySplashScreenBinding
 
 class SplashScreen : AppCompatActivity() {
