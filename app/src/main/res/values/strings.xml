@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MVVM-Weather</string>
+    <string name="enter_latitude">Enter latitude</string>
+    <string name="enter_longitude">Enter longitude</string>
+    <string name="submit">Submit</string>
+</resources>
