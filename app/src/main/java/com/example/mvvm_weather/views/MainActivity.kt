@@ -8,24 +8,17 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.mvvm_weather.utils.CustomXAxisRenderer
 import com.example.mvvm_weather.R
-import com.example.mvvm_weather.models.WeatherIntervals
-import com.example.mvvm_weather.database.entities.LocationEntity
+import com.example.mvvm_weather.utils.CustomXAxisRenderer
 import com.example.mvvm_weather.view_models.WeatherViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.renderer.XAxisRenderer
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private val weatherViewModel: WeatherViewModel by viewModel()

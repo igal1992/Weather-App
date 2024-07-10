@@ -30,6 +30,8 @@
         <EditText
             android:id="@+id/latitude_edit_text"
             style="@style/EditText"
+            android:autofillHints="latitude"
+            android:hint="@string/latitude"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_weight="1"
@@ -60,7 +62,9 @@
         <EditText
             android:id="@+id/longitude_edit_text"
             style="@style/EditText"
+            android:autofillHints="longitude"
             android:layout_width="0dp"
+            android:hint="@string/longitude"
             android:layout_height="36dp"
             android:layout_weight="1"
             android:inputType="numberDecimal" />

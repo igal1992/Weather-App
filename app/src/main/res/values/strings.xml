@@ -3,4 +3,6 @@
     <string name="enter_latitude">Enter latitude</string>
     <string name="enter_longitude">Enter longitude</string>
     <string name="submit">Submit</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
 </resources>
